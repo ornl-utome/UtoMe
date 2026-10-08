@@ -1,0 +1,171 @@
+seed: 42
+run_test_after_fit: false
+
+trainer:
+  default_root_dir: outputs/1p40625/utome_e_25
+  accelerator: gpu
+  devices: 8
+  num_nodes: 8
+  strategy: ddp
+  precision: bf16-mixed
+  max_epochs: 200
+  max_steps: 12000
+  check_val_every_n_epoch: 5
+  log_every_n_steps: 50
+  deterministic: false
+  gradient_clip_val: 1.0
+
+optimization:
+  lr: 5.0e-4
+  beta_1: 0.9
+  beta_2: 0.99
+  weight_decay: 1.0e-5
+  warmup_steps: 1000
+  max_steps: 12000
+  warmup_start_lr: 1.0e-8
+  eta_min: 1.0e-8
+
+loss:
+  importance_weight: 0.1
+  importance_type: pairwise_rank
+
+model:
+  default_vars:
+    - land_sea_mask
+    - orography
+    - lattitude
+    - 2m_temperature
+    - 10m_u_component_of_wind
+    - 10m_v_component_of_wind
+    - geopotential_50
+    - geopotential_250
+    - geopotential_500
+    - geopotential_600
+    - geopotential_700
+    - geopotential_850
+    - geopotential_925
+    - u_component_of_wind_50
+    - u_component_of_wind_250
+    - u_component_of_wind_500
+    - u_component_of_wind_600
+    - u_component_of_wind_700
+    - u_component_of_wind_850
+    - u_component_of_wind_925
+    - v_component_of_wind_50
+    - v_component_of_wind_250
+    - v_component_of_wind_500
+    - v_component_of_wind_600
+    - v_component_of_wind_700
+    - v_component_of_wind_850
+    - v_component_of_wind_925
+    - temperature_50
+    - temperature_250
+    - temperature_500
+    - temperature_600
+    - temperature_700
+    - temperature_850
+    - temperature_925
+    - specific_humidity_50
+    - specific_humidity_250
+    - specific_humidity_500
+    - specific_humidity_600
+    - specific_humidity_700
+    - specific_humidity_850
+    - specific_humidity_925
+  img_size: [128, 256]
+  patch_size: 4
+  embed_dim: 1024
+  depth: 8
+  decoder_depth: 2
+  num_heads: 16
+  mlp_ratio: 4.0
+  drop_path: 0.1
+  drop_rate: 0.1
+  tome:
+    enabled: true
+    ratio: 0.25
+    prop_attn: false
+  utome:
+    method: utome_e
+    teacher_mode: dynamics_minus_uq
+    teacher_uq_source: eda
+    merge_warmup_epochs: 0
+    probe_layer: 3
+    target_variables:
+      - geopotential_500
+      - temperature_850
+      - 2m_temperature
+      - 10m_u_component_of_wind
+      - 10m_v_component_of_wind
+    importance_head_type: conv
+    importance_hidden_dim: 256
+    teacher_beta: 1.0
+    protect_fraction: 0.25
+    importance_lambda: 0.05
+    importance_eta: 0.05
+    use_predicted_for_merge: true
+
+data:
+  root_dir: /path/to/era5/1p40625
+  uq_root_dir: /path/to/eda_uq/1p40625
+  variables:
+    - land_sea_mask
+    - orography
+    - lattitude
+    - 2m_temperature
+    - 10m_u_component_of_wind
+    - 10m_v_component_of_wind
+    - geopotential_50
+    - geopotential_250
+    - geopotential_500
+    - geopotential_600
+    - geopotential_700
+    - geopotential_850
+    - geopotential_925
+    - u_component_of_wind_50
+    - u_component_of_wind_250
+    - u_component_of_wind_500
+    - u_component_of_wind_600
+    - u_component_of_wind_700
+    - u_component_of_wind_850
+    - u_component_of_wind_925
+    - v_component_of_wind_50
+    - v_component_of_wind_250
+    - v_component_of_wind_500
+    - v_component_of_wind_600
+    - v_component_of_wind_700
+    - v_component_of_wind_850
+    - v_component_of_wind_925
+    - temperature_50
+    - temperature_250
+    - temperature_500
+    - temperature_600
+    - temperature_700
+    - temperature_850
+    - temperature_925
+    - specific_humidity_50
+    - specific_humidity_250
+    - specific_humidity_500
+    - specific_humidity_600
+    - specific_humidity_700
+    - specific_humidity_850
+    - specific_humidity_925
+  out_variables:
+    - geopotential_500
+    - temperature_850
+    - 2m_temperature
+    - 10m_u_component_of_wind
+    - 10m_v_component_of_wind
+  uq_variables:
+    - geopotential_500
+    - temperature_850
+    - 2m_temperature
+    - 10m_u_component_of_wind
+    - 10m_v_component_of_wind
+  predict_range: 72
+  hrs_each_step: 1
+  buffer_size: 10000
+  batch_size: 1
+  num_workers: 1
+  pin_memory: false
+  strict_uq: true

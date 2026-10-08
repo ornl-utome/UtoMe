@@ -1,0 +1,38 @@
+[build-system]
+requires = ["setuptools>=77", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "utome"
+version = "0.1.0"
+description = "UtoMe: uncertainty-guided token merging for weather forecasting"
+readme = "README.md"
+requires-python = ">=3.10"
+license = "CC-BY-NC-4.0"
+license-files = ["LICENSE", "THIRD_PARTY_NOTICES.md", "licenses/*.txt"]
+authors = [
+  { name = "Yunbei Zhang", email = "yzhang111@tulane.edu" },
+  { name = "Janet Wang" },
+  { name = "Xi Xiao" },
+  { name = "Jihun Hamm" },
+  { name = "Xiao Wang", email = "wangx2@ornl.gov" }
+]
+dependencies = [
+  "numpy>=1.24",
+  "pyyaml>=6.0",
+  "scipy>=1.10",
+  "timm>=0.9.12",
+  "torch>=2.2",
+  "pytorch-lightning>=2.2",
+  "tensorboard>=2.16",
+]
+
+[project.urls]
+Homepage = "https://ornl-utome.github.io/"
+Repository = "https://github.com/ornl-utome/UtoMe"
+
+[project.optional-dependencies]
+data = ["xarray>=2024.1", "netCDF4>=1.6"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
