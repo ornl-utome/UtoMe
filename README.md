@@ -37,7 +37,9 @@ UtoMe uses observation uncertainty to guide training-time token merging for tran
 
 ## Run
 
-Use Python 3.10+ with a working **ROCm PyTorch** installation on AMD GPUs, then:
+The paper uses **64 AMD MI250X GPU devices across 8 nodes (8 devices per node)** with DDP. The supplied configs use this setup: `trainer.num_nodes: 8` and `trainer.devices: 8`.
+
+Use Python 3.10+ with a working **ROCm PyTorch** installation, then:
 
 ```bash
 pip install -e .
@@ -105,4 +107,4 @@ This research was supported by ORNL's AI Initiative, sponsored by the Director's
 
 ## License
 
-Code and configurations use [CC BY-NC 4.0](LICENSE): noncommercial reuse and modification with attribution. Upstream notices and the earlier MIT notice are retained in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
+Code and configurations use [CC BY-NC 4.0](LICENSE): noncommercial reuse and modification with attribution.
